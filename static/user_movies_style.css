@@ -1,0 +1,51 @@
+@import "styles.css";
+
+
+.buttons {
+    width: 100%;
+    height: 80px;
+    padding: 8px;
+    display: flex;
+}
+
+#new_movie, #user_reviews {
+    width: 10%;
+    margin: 5px;
+}
+
+#new_movie button, #user_reviews button {
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    background-color: azure;
+    border: none;
+    font-weight: 700;
+    font-size: 1em;
+    color:red;
+}
+
+#new_movie button:hover {
+    box-shadow: 2px 2px 5px black;
+}
+
+.movies-section {
+    width: 60%;
+    min-height: 600px;
+    padding: 6%;
+    color: azure;
+}
+
+.movies-section ul {
+    font-size: 1.3em;
+}
+
+.movies-section li {
+    list-style-type: none;
+}
+
+#delete_btn button, #update-btn button, #add_review-btn button {
+    width: 180px;
+    height: 30px;
+    color: red;
+    font-weight: 600;
+}

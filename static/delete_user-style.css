@@ -1,0 +1,21 @@
+@import "styles.css";
+
+.delete-user-section {
+    width: 60%;
+    color: azure;
+    min-height: 550px;
+    padding: 6%;
+}
+
+.btn-btn-delete {
+    border: none;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+    color: red;
+    font-weight: 600;
+}
+
+.btn-btn-delete:hover {
+    box-shadow: 2px 2px 5px black;
+}

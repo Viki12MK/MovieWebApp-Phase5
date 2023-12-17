@@ -1,0 +1,57 @@
+@import "styles.css";
+
+.add-review-section {
+    width: 60%;
+    min-height: 600px;
+    padding: 6%;
+    color: azure;
+}
+
+.add-review-section h1 {
+    color:azure;
+    font-size: 3em;
+}
+
+.add-review-section p {
+    color: azure;
+    font-size: 1.5em;
+}
+
+.add-review-section form {
+    width: 50%;
+    margin: 3% 0;
+    padding: 3% 0;
+
+}
+
+form textarea {
+    width: 100%;
+    height: 150px;
+}
+
+form input {
+    width: 20%;
+    height: 30px;
+}
+
+form button {
+    width: 140px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: azure;
+    color: red;
+    font-size: 1em;
+    font-weight: 600;
+}
+
+form button:hover {
+    box-shadow: 2px 2px 5px black;
+}
+
+.added_review_display {
+    width: 50%;
+    height: 200px;
+    margin: 2%;
+    color: azure;
+}

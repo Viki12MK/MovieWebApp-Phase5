@@ -1,0 +1,20 @@
+@import "styles.css";
+
+.user-reviews {
+    width: 60%;
+    min-height: 600px;
+    padding: 6%;
+    color: azure;
+}
+
+.user-reviews h2 {
+    font-size: 3em;
+}
+
+.user-reviews p {
+    font-size: 1.2em;
+}
+
+.review-details {
+    margin: 2%;
+}
