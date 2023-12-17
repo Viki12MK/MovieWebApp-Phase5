@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MovieWEB App | Add Review</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/add-review-style.css">
+</head>
+<body>
+    <header>
+        <!-- LOGO -->
+        <div class="logo-header">
+            <div class="logo-img">
+                <img src="/static/images/MovieWebApp_logo_trans_bg.png" alt="Logo">
+            </div>
+            <div class="header-txt">
+                <h1>MovieWeb App</h1>
+            </div>
+
+
+        </div>
+
+        <nav class="navbar">
+            <ul class="menu">
+                <li><a class="active" href="/">HOME</a></li>
+                <li><a href="/users">USERS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="add-review-section">
+            <h1>Add Review</h1>
+            <!-- Display user information -->
+            <p>User ID: {{ user.id }}<br> User Name: {{ user.name }}</p>
+            <!-- Display movie information -->
+            <p>For movie ID: {{ movie_id }} and Title: {{ movie.title }}</p>
+
+            <form method="post" action="{{ url_for('add_review', user_id=user.id, movie_id=movie.id) }}" enctype="multipart/form-data">
+                <!-- Hidden fields for user_id and movie_id -->
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                
+                <label for="review_text">Review Text:</label><br>
+                <textarea id="review_text" name="review_text" rows="4" required></textarea><br><br>
+                
+                <label for="rating">Rating:</label><br>
+                <input type="text" id="rating" name="rating" required><br><br>
+                
+                <button type="submit">Submit Review</button>
+            </form>
+            
+            <div class="added_review_display">
+                <h1>Added Review</h1>
+                {% if new_review %}
+                    <p>For Movie: {{ movie.title }} </p>
+                    <p>Review: {{ new_review.review_text }}</p>
+                    <p>Rating: {{ new_review.rating }}</p>
+                {% else %}
+                    <p>No review added.</p>
+                {% endif %}
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <nav class="navbar">
+            <ul class="menu">
+                <li><a class="active" href="/">HOME</a></li>
+                <li><a href="/users">USERS</a></li>
+            </ul>
+        </nav>
+        <hr>
+        <div class="copyright">
+            <p>&copy All right Reserved | 2023 | MovieWeb App</p>
+        </div>
+    </footer>
+    <!-- Include Bootstrap JS and Popper.js (optional) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script src="/static/index.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MovieWEB App | Users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/users-style.css">
+</head>
+<body>
+    <header>
+        <!-- LOGO -->
+        <div class="logo-header">
+            <div class="logo-img">
+                <img src="/static/images/MovieWebApp_logo_trans_bg.png" alt="Logo">
+            </div>
+            <div class="header-txt">
+                <h1>MovieWeb App</h1>
+            </div>
+
+
+        </div>
+
+        <nav class="navbar">
+            <ul class="menu">
+                <li><a class="active" href="/">HOME</a></li>
+                <li><a href="/users">USERS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="buttons">
+            <div class="btn" id="new_user">
+                <a href="/add_user"><button>ADD NEW USER</button></a>
+            </div>
+            <div class="btn" id="movie_reviews">
+                <a href="/movie_reviews"><button>MOVIE REVIEWS</button></a>
+            </div>
+        </div>
+        <div class="users-section">
+            <h1>USER LIST</h1>
+            <br>
+            <ul>
+                {% for user in users %}
+                    <li><a href="{{ url_for('get_user_movies', user_id=user['id']) }}">{{ user['name'] }} <br> {{ user['email'] }}</a></li>
+                    <br>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+    <footer>
+        <nav class="navbar">
+            <ul class="menu">
+                <li><a class="active" href="/">HOME</a></li>
+                <li><a href="/users">USERS</a></li>
+            </ul>
+        </nav>
+        <hr>
+        <div class="copyright">
+            <p>&copy All right Reserved | 2023 | MovieWeb App</p>
+        </div>
+    </footer>
+    <!-- Include Bootstrap JS and Popper.js (optional) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script src="/static/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>MovieWeb App | User Movies</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/user_movies_style.css">
+    </head>
+    <body>
+        <header>
+            <!-- LOGO -->
+            <div class="logo-header">
+                <div class="logo-img">
+                    <img src="/static/images/MovieWebApp_logo_trans_bg.png" alt="Logo">
+                </div>
+                <div class="header-txt">
+                    <h1>MovieWeb App</h1>
+                </div>
+    
+    
+            </div>
+    
+            <nav class="navbar">
+                <ul class="menu">
+                    <li><a class="active" href="/">HOME</a></li>
+                    <li><a href="/users">USERS</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <div class="buttons">
+                <div class="btn" id="new_movie">
+                    <a href="{{ url_for('add_movie', user_id=user['id']) }}"><button>ADD NEW MOVIE</button></a>
+                </div>
+                <div class="btn" id="user_reviews">
+                    <a href="{{ url_for('get_user_reviews', user_id=user['id']) }}"><button>USER REVIEW</button></a>
+                </div>
+            </div>
+            <div class="movies-section">
+                <h1>MOVIES LIST</h1>
+                <h2>User: {{ user['name'] }}</h2>
+                <br>
+                <h2>User's Movies:</h2>
+                <ul>
+                    {% for movie in user_movies %}
+                    <li>{{ movie.title }} - {{ movie.director }} - {{ movie.year }} - {{ movie.rating }}
+                        <div class="button" id="delete_btn">
+                            <a href="{{ url_for('delete_movie', user_id=user['id'], movie_id=movie['id']) }}"><button>DELETE MOVIE</button></a>
+                        </div>
+                        <div class="button" id="update-btn">
+                            <a href="{{ url_for('update_movie', user_id=user['id'], movie_id=movie['id']) }}"><button>UPDATE MOVIE</button></a>
+                        </div>
+                        <div class="button" id="add_review-btn">
+                            <a href="{{ url_for('add_review', user_id=user['id'], movie_id=movie['id']) }}"><button>ADD REVIEW</button></a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    <br>
+                </ul>
+            </div>
+        </main>
+        <footer>
+            <nav class="navbar">
+                <ul class="menu">
+                    <li><a class="active" href="/">HOME</a></li>
+                    <li><a href="/users">USERS</a></li>
+                </ul>
+            </nav>
+            <hr>
+            <div class="copyright">
+                <p>&copy All right Reserved | 2023 | MovieWeb App</p>
+            </div>
+        </footer>
+        <!-- Include Bootstrap JS and Popper.js (optional) -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+        <script src="/static/index.js"></script>
+    </body>
+</html>
