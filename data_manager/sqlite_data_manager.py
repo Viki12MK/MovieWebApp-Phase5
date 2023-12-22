@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from .data_manager_interface import DataManagerInterface
 from models.models import User, Movie, UserMoviesRelationship, Review
+# from sqlalchemy.exc import IntegrityError
 
 
 class SQLiteDataManager(DataManagerInterface):
@@ -44,9 +45,12 @@ class SQLiteDataManager(DataManagerInterface):
     def get_user_movies(self, user_id):
         user = User.query.get(user_id)
         if user:
-            return [{'id': movie.id, 'title': movie.title, 'director': movie.director, 
-                 'year': movie.year, 'rating': movie.rating} for movie in user.movies]
-        return [] 
+            movies = Movie.query.join(UserMoviesRelationship, (UserMoviesRelationship.movie_id == Movie.id)).filter_by(
+                user_id=user_id).all()
+
+            return [{'id': movie.id, 'title': movie.title, 'director': movie.director,
+                 'year': movie.year, 'rating': movie.rating, 'poster': movie.poster} for movie in movies]
+        return []
     
     def get_user_by_name(self, user_name):
         user = User.query.filter_by(name=user_name).first()
@@ -61,14 +65,59 @@ class SQLiteDataManager(DataManagerInterface):
 
     def add_movie(self, user_id, movie_data):
         user = self.get_user_by_id(user_id)
+
         if user:
-            new_movie = Movie(**movie_data)
-            user.movies.append(new_movie)
-            self.db.session.commit()
-            return new_movie
+            # Extract relevant movie data from the API response
+            title = movie_data.get('Title')
+            director = movie_data.get('Director')
+            year = int(movie_data.get('Year'))
+            rating = float(movie_data.get('imdbRating'))
+            poster = movie_data.get('Poster')
+
+            # Check if the movie already exists in the database
+            existing_movie = Movie.query.filter_by(title=title, director=director, year=year, rating=rating).first()
+
+            if existing_movie:
+                # Check if the relationship already exists
+                if existing_movie not in user.movies:
+                    # Add the existing movie to the user's list
+                    user.movies.append(existing_movie)
+
+                # Create a new relationship if it doesn't exist
+                if UserMoviesRelationship.query.filter_by(user_id=user.id, movie_id=existing_movie.id).first() is None:
+                    relationship = UserMoviesRelationship(user_id=user.id, movie_id=existing_movie.id)
+                    self.db.session.add(relationship)
+
+                self.db.session.commit()
+
+                # Return the existing movie
+                return existing_movie
+            else:
+                # Check if the relationship already exists
+                if Movie.query.filter(Movie.users.any(id=user_id)).filter_by(title=title).first():
+                    return {'error': 'Movie already added to the user.'}
+                
+                # Create a new Movie instance
+                new_movie = Movie(title=title, director=director, year=year, rating=rating, poster=poster)
+
+                # Add the new movie to the user's list
+                user.movies.append(new_movie)
+
+                # Add the new movie to the database
+                self.db.session.add(new_movie)
+                self.db.session.commit()
+
+                # Create a new relationship
+                if UserMoviesRelationship.query.filter_by(user_id=user.id, movie_id=new_movie.id).first() is None:
+                    relationship = UserMoviesRelationship(user_id=user.id, movie_id=new_movie.id)
+                    self.db.session.add(relationship)
+
+                self.db.session.commit()
+
+                return new_movie
         else:
             return None
-       
+        
 
     def update_movie(self, user_id, movie_id, movie_data):
         user = User.query.get(user_id)
@@ -154,12 +203,4 @@ class SQLiteDataManager(DataManagerInterface):
         
         return all_movie_reviews
         
-    def delete_user(self, user_id):
-        user = User.query.get(user_id)
-        if user:
-            # Delete user 
-            self.db.session.delete(user)
-            self.db.session.commit()
-            return {'message': 'User deleted successfully.'}
-        return {'error': 'User not found.'}
     
