@@ -17,6 +17,7 @@ class Movie(db.Model):
     director = db.Column(db.String(255), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     rating = db.Column(db.Float, nullable=False)
+    poster = db.Column(db.String(255))
 
 class Review(db.Model):
     __tablename__ = 'review'
