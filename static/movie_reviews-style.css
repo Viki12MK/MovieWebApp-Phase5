@@ -1,10 +1,10 @@
 @import "styles.css";
 
 .movie-reviews-section {
-    width: 60%;
+    width: 80%; /* Increased width for better grid layout */
     min-height: 550px;
     padding: 6%;
-    color:azure;
+    color: azure;
 }
 
 .movie-reviews-section h2 {
@@ -13,18 +13,24 @@
 
 .movie-reviews-section ul {
     list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust column width as needed */
+    grid-gap: 20px; /* Adjust gap between grid items */
 }
 
 .movie-reviews-section ul li {
-    width: 300px;
     padding: 1%;
-    margin: 1%;
     background-color: rgb(117, 3, 3);
     border-radius: 5px;
     text-align: center;
 }
 
-.users-section ul li a {
+.movie-reviews-section ul li strong {
+    display: block; /* Display each piece of information on a new line */
+    margin-bottom: 5px; /* Add some space between items */
+}
+
+.movie-reviews-section ul li a {
     color: azure;
     text-decoration: none;
 }
