@@ -3,9 +3,11 @@ from data_manager.sqlite_data_manager import SQLiteDataManager
 from models.models import db
 from api_blueprint import api
 import os
+import requests
 
 app = Flask(__name__)
 app.register_blueprint(api, url_prefix='/api')
+
 
 # Create the 'data' directory if it doesn't exist
 data_directory = os.path.join(os.getcwd(), 'data')
@@ -93,42 +95,35 @@ def add_movie(user_id):
         if user_movies is None:
             return jsonify({'error': 'User not found'}), 404
 
-        # Extract the movie data from the request's JSON file
-        movie_data = request.form.to_dict()
-        if not movie_data:
-            return jsonify({'error': 'No movie data provided'}), 400
-
-        # Check if all required fields are present
-        required_fields = ['title', 'director', 'year', 'rating']
-        for field in required_fields:
-            if field not in movie_data:
-                return jsonify({'error': f'Missing movie {field}.'}), 400
-
-        # Convert the rating field to float
-        try:
-            movie_data['rating'] = float(movie_data['rating'])
-        except ValueError:
-            return jsonify({'error': 'Rating must be a valid number.'}), 400
+        # Extract the movie title from the request's form data
+        movie_title = request.form.get('title')
 
         # Check if the movie already exists for the user
-        movie_exist = None
-        for movie in user_movies:
-            if movie['title'] == movie_data['title']:
-                movie_exist = movie
-                break
+        movie_exist = next((movie for movie in user_movies if movie['title'] == movie_title), None)
 
         if movie_exist:
+            # Display information about the existing movie
             return render_template('add_movie.html', user_id=user_id, user_name=user_name, movie_exist=movie_exist,
                                    new_movie=None)
         else:
-            # Add the movie to the user's list
-            new_movie = data_manager.add_movie(user_id, movie_data)
-            if new_movie is None:
-                return jsonify({'error': 'Failed to add movie to user.'}), 500
+            # Fetch movie details from OMDb API
+            omdb_api_key = '770a6d70'  
+            omdb_api_url = f'http://www.omdbapi.com/?apikey={omdb_api_key}&t={movie_title}&plot=full'
+            response = requests.get(omdb_api_url)
+            movie_data_from_api = response.json()
 
-            # Pass the newly added movie data and user_name to the template for display
-            return render_template('add_movie.html', user_id=user_id, user_name=user_name,
-                                   movie_exist=None, new_movie=new_movie)
+            if response.status_code == 200 and movie_data_from_api['Response'] == 'True':
+                # Add the movie to the user's list
+                new_movie = data_manager.add_movie(user_id, movie_data_from_api)
+                if new_movie is None:
+                    return jsonify({'error': 'Failed to add movie to user.'}), 500
+
+                # Pass the newly added movie data and user_name to the template for display
+                return render_template('add_movie.html', user_id=user_id, user_name=user_name,
+                                       movie_exist=None, new_movie=new_movie)
+            else:
+                return jsonify({'error': 'Failed to fetch movie details from OMDb API.'}), 500
+
     else:
         # If the request is GET, render the template for adding a movie
         print(f"DEBUG: Rendering add_movie.html with user_id: {user_id}")
@@ -159,7 +154,7 @@ def update_movie(user_id, movie_id):
     else:
         # Handle other methods if needed
         return "Method Not Allowed", 405
-
+    
 
 @app.route('/users/<int:user_id>/delete_movie/<int:movie_id>', methods=['GET', 'POST'])
 def delete_movie(user_id, movie_id):
@@ -270,26 +265,6 @@ def movie_reviews():
         return "No movie reviews available.", 404
     
     return render_template('movie_reviews.html', movie_reviews=all_movie_reviews)
-
-@app.route('/delete_user/<int:user_id>', methods=['GET', 'POST'])
-def delete_user(user_id):
-    user_info = data_manager.get_user_by_id(user_id)
-    
-    if request.method == 'POST':
-        if user_info:
-            # Delete user logic
-            result = data_manager.delete_user(user_id)
-
-            if 'message' in result:
-                message = result['message']
-            else:
-                message = "Failed to delete the user."
-            
-            return render_template('delete_user.html', user_info=user_info, message=message)
-        
-        return "User not found.", 404
-
-    return render_template('delete_user.html', user_info=user_info, message=None)
 
 
 @app.errorhandler(404)
