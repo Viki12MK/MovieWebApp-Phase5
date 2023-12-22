@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MovieWEB App | User Reviews</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/user_reviews-styles.css">
+</head>
+<body>
+    <header>
+        <!-- LOGO -->
+        <div class="logo-header">
+            <div class="logo-img">
+                <img src="/static/images/MovieWebApp_logo_trans_bg.png" alt="Logo">
+            </div>
+            <div class="header-txt">
+                <h1>MovieWeb App</h1>
+            </div>
+        </div>
+
+        <nav class="navbar">
+            <ul class="menu">
+                <li><a class="active" href="/">HOME</a></li>
+                <li><a href="/users">USERS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="user-reviews-section">
+            <h2>User Reviews</h2>
+            <p>User: {{ user.name }}</p>
+
+            <div class="row">
+                {% for movie in user_movies %}
+                    <div class="col-md-4">
+                        <div class="review-card">
+                            <div class="display-review">
+                                <p>Movie Title: <strong>{{ movie.title }}</strong></p>
+                                {% if reviews|length == 0 %}
+                                    <p>The review is not added yet for this movie.</p>
+                                {% else %}
+                                    {% set has_review = false %}
+                                    {% for review in reviews %}
+                                        {% if review.movie_id == movie.id %}
+                                            <div class="review-details">
+                                                <p><strong>Review Text:</strong> {{ review.review_text }}</p>
+                                                <p><strong>Rating:</strong> {{ review.rating }}</p>
+                                            </div>
+                                            {% set has_review = true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not has_review %}
+                                        <p>No review added yet.</p>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <nav class="navbar">
+            <ul class="menu">
+                <li><a class="active" href="/">HOME</a></li>
+                <li><a href="/users">USERS</a></li>
+            </ul>
+        </nav>
+        <hr>
+        <div class="copyright">
+            <p>&copy; All right Reserved | 2023 | MovieWeb App</p>
+        </div>
+    </footer>
+    <!-- Include Bootstrap JS and Popper.js (optional) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script src="/static/index.js"></script>
+</body>
+</html>

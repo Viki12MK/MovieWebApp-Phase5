@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MovieWEB App | Delete User</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/delete_user-style.css">
+</head>
+<body>
+    <header>
+        <!-- LOGO -->
+        <div class="logo-header">
+            <div class="logo-img">
+                <img src="/static/images/MovieWebApp_logo_trans_bg.png" alt="Logo">
+            </div>
+            <div class="header-txt">
+                <h1>MovieWeb App</h1>
+            </div>
+
+
+        </div>
+
+        <nav class="navbar">
+            <ul class="menu">
+                <li><a class="active" href="/">HOME</a></li>
+                <li><a href="/users">USERS</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="delete-user-section">
+            <h2>Delete User</h2>
+            <div class="form-group">
+                <h2>User ID: {{ user_info.id }}</h2>
+            </div>
+            
+            <form method="post" action="{{ url_for('delete_user', user_id=user_info.id) }}">
+                <button type="submit" class="btn-btn-delete">Delete User</button>
+            </form>
+
+            <!-- Display user information and success message here -->
+            {% if message %}
+                <div class="deleted_user_display">
+                    <h4>User Information:</h4>
+                    <p>User ID: {{ user_info.id }}</p>
+                    <p>User Name: {{ user_info.name }}</p>
+                    <p>User Email: {{ user_info.email }}</p>
+                    <p>{{ message }}</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        
+    </main>
+    <footer>
+        <nav class="navbar">
+            <ul class="menu">
+                <li><a class="active" href="/">HOME</a></li>
+                <li><a href="/users">USERS</a></li>
+            </ul>
+        </nav>
+        <hr>
+        <div class="copyright">
+            <p>&copy All right Reserved | 2023 | MovieWeb App</p>
+        </div>
+    </footer>
+    <!-- Include Bootstrap JS and Popper.js (optional) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script src="/static/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+@import "styles.css";
+
+.user-reviews-section {
+    width: 98%;
+    min-height: 600px;
+    padding: 6%;
+    color: azure;
+    margin: auto; 
+}
+
+.review-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 20px;
+    background: white;
+    color: red;
+    text-align: center;
+}

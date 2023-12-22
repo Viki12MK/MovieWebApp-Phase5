@@ -1,0 +1,19 @@
+@import "styles.css";
+
+.update-movie-container {
+    width: 60%;
+    min-height: 600px;
+    padding: 3%;
+    color: azure;
+}
+
+.update-movie-container button {
+    width: 150px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: azure;
+    color: red;
+    font-size: 1em;
+    font-weight: 600;
+}
