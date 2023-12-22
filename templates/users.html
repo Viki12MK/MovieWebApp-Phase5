@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>MovieWEB App | Users</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -17,10 +18,7 @@
             <div class="header-txt">
                 <h1>MovieWeb App</h1>
             </div>
-
-
         </div>
-
         <nav class="navbar">
             <ul class="menu">
                 <li><a class="active" href="/">HOME</a></li>
@@ -28,7 +26,6 @@
             </ul>
         </nav>
     </header>
-
     <main>
         <div class="buttons">
             <div class="btn" id="new_user">
@@ -40,13 +37,18 @@
         </div>
         <div class="users-section">
             <h1>USER LIST</h1>
-            <br>
-            <ul>
+            <div class="row">
                 {% for user in users %}
-                    <li><a href="{{ url_for('get_user_movies', user_id=user['id']) }}">{{ user['name'] }} <br> {{ user['email'] }}</a></li>
-                    <br>
+                    <div class="col-md-4">
+                        <div class="user-card">
+                            <a href="{{ url_for('get_user_movies', user_id=user['id']) }}">
+                                <p><strong>{{ user['name'] }}</strong></p>
+                                <p>{{ user['email'] }}</p>
+                            </a>
+                        </div>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     </main>
     <footer>
@@ -65,7 +67,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
     <script src="/static/index.js"></script>
 </body>
 </html>
